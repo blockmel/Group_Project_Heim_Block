@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "129280729189",
+    "project_id": "group-project-heim-block",
+    "storage_bucket": "group-project-heim-block.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129280729189:android:37bc4d6dadc5602914668c",
+        "android_client_info": {
+          "package_name": "de.hsas.inf.group_project_heim_block"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129280729189-h2ga76pv2bqbru86h0ino50tr7qbgjtn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjzBsilD4DCYqeXBtKtEx6KfnWtWA5TuA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129280729189-h2ga76pv2bqbru86h0ino50tr7qbgjtn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
