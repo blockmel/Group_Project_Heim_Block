@@ -1,18 +1,39 @@
 package de.hsas.inf.group_project_heim_block
 
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import de.hsas.inf.group_project_heim_block.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     val TAG = "MainActivity"
+    private lateinit var binding: ActivityMainBinding
+    override fun onPostResume() {
+        super.onPostResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val db = Firebase.firestore
+
+
+
+        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+
 
 
 // !!!       create a first user
