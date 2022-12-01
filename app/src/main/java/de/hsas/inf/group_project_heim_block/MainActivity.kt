@@ -6,15 +6,68 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import de.hsas.inf.group_project_heim_block.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     val TAG = "MainActivity"
+    private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityMainBinding
     override fun onPostResume() {
         super.onPostResume()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        auth = Firebase.auth
+        binding.signup.setOnClickListener {
+            val email = binding.email.text.toString()  //Not sur here
+            val password = binding.password.text.toString()
+            createUser(email, password)
+        }
+
+
+    }
+
+    private fun createUser(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "createUserWithEmail:success")
+                    val user = auth.currentUser
+//                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    Toast.makeText(baseContext, "email is not valid or already used.",
+                        Toast.LENGTH_SHORT).show()
+//                    updateUI(null)
+                }
+            }
+    }
+
+    private fun authUser(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+//                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+//                    updateUI(null)
+                }
+            }
     }
 
     override fun onPause() {
