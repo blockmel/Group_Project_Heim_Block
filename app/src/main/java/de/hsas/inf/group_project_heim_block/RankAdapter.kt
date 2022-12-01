@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class RankAdapter(val listItems: Array<String>, val context: Context) : RecyclerView.Adapter<RankViewHolder>() {
+class RankAdapter(val listItems: Array<User>, val context: Context) : RecyclerView.Adapter<RankViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankViewHolder {
         val inflator = LayoutInflater.from(parent.context)
         val view = inflator.inflate(R.layout.rank_recycler_template, parent, false)
@@ -19,12 +16,16 @@ class RankAdapter(val listItems: Array<String>, val context: Context) : Recycler
     }
 
     override fun onBindViewHolder(holder: RankViewHolder, position: Int) {
-        holder.itemView.findViewById<TextView>(R.id.rank).text = listItems[position]
-        holder.itemView.findViewById<TextView>(R.id.name).text = listItems[position]
-        holder.itemView.findViewById<TextView>(R.id.score).text = listItems[position]
+        holder.itemView.findViewById<TextView>(R.id.rank).text = listItems[position].rank
+        holder.itemView.findViewById<TextView>(R.id.name).text = listItems[position].name
+        holder.itemView.findViewById<TextView>(R.id.score).text = listItems[position].score
         holder.itemView.setOnClickListener {
             val intent = Intent(context, UserActivity()::class.java)
-//            intent.putExtra(RANK_NAME, rank.name)
+            intent.putExtra("rank", listItems[position].rank)
+            intent.putExtra("name", listItems[position].name)
+            intent.putExtra("score", listItems[position].score)
+            intent.putExtra("course", listItems[position].course)
+            intent.putExtra("year", listItems[position].year)
             context.startActivity(intent)
         }
     }

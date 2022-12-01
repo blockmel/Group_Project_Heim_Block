@@ -1,14 +1,9 @@
 package de.hsas.inf.group_project_heim_block
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import de.hsas.inf.group_project_heim_block.databinding.ActivityRankBinding
-
-const val RANK_NAME = "rank name"
 
 class RankActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRankBinding
@@ -21,7 +16,7 @@ class RankActivity : AppCompatActivity() {
         setContentView(rootView)
 
         binding.leaderboardRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.leaderboardRecyclerView.adapter = RankAdapter(rankStrings, this)
+        binding.leaderboardRecyclerView.adapter = RankAdapter(userArray, this)
 
 //        val rankAdapter = RankAdapter { rank -> adapterOnClick(rank) }
 /*
