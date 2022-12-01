@@ -4,4 +4,15 @@
     <string name="password">Password</string>
     <string name="sign_up_button">Sign up</string>
     <string name="sign_in_button">Sign in</string>
+    <string name="back">Back</string>
+    <string name="last_refreshed">Last refreshed</string>
+    <string name="refreshing_in_x_seconds">Refreshing in x seconds</string>
+    <string name="_1">1</string>
+    <string name="josh">Josh</string>
+    <string name="_1234">1234</string>
+    <string name="name">Name:</string>
+    <string name="course">Course:</string>
+    <string name="year">Year:</string>
+    <string name="rank">Rank:</string>
+    <string name="score">Score:</string>
 </resources>
