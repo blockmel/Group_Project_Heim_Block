@@ -2,10 +2,49 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <TextView
-        android:id="@+id/text_view_id"
+        android:id="@+id/name"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="@string/details_activity_welcome" />
+        android:text="@string/name" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="name"
+        android:id="@+id/name_edit"
+        android:autofillHints="name"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/course"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/course" />
+
+    <EditText
+        android:id="@+id/course_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="course"
+        android:autofillHints="course"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/year"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/year" />
+
+    <EditText
+        android:id="@+id/year_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="course"
+        android:autofillHints="year"
+        android:inputType="number" />
+
 </LinearLayout>
