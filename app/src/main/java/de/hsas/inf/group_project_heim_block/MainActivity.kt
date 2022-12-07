@@ -1,6 +1,7 @@
 package de.hsas.inf.group_project_heim_block
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
@@ -24,11 +25,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = Firebase.auth
         binding.signup.setOnClickListener {
-            val email = binding.email.text.toString()  //Not sur here
+            val email = binding.email.text.toString()
             val password = binding.password.text.toString()
             createUser(email, password)
+            val intent = Intent(this, DetailsActivity::class.java)
+            startActivity(intent);
         }
-
+        binding.signin.setOnClickListener {
+            val email = binding.email.text.toString()
+            val password = binding.password.text.toString()
+            authUser(email, password)
+        }
 
     }
 
@@ -58,6 +65,8 @@ class MainActivity : AppCompatActivity() {
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
 //                    updateUI(user)
+                    val intent = Intent(this, DetailsActivity::class.java)
+                    startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
