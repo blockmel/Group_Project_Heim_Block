@@ -19,36 +19,23 @@ class MainActivity : AppCompatActivity() {
     val TAG = "MainActivity"
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityMainBinding
+    val db = Firebase.firestore
     override fun onPostResume() {
         super.onPostResume()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         auth = Firebase.auth
-        val db = Firebase.firestore
         binding.signup.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
             createUser(email, password)
-            val userData = hashMapOf(
-                "name" to "",
-                "course" to "",
-                "year" to ""
-            )
-            db.collection("users").document(email)
-                .set(userData)
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
 
-            val intent = Intent(this, DetailsActivity::class.java)
-            intent.putExtra("email", email)
-            startActivity(intent);
         }
         binding.signin.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
             authUser(email, password)
         }
-
     }
 
     private fun createUser(email: String, password: String) {
@@ -59,6 +46,20 @@ class MainActivity : AppCompatActivity() {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
 //                    updateUI(user)
+
+                    val userData = hashMapOf(
+                        "name" to "",
+                        "course" to "",
+                        "year" to ""
+                    )
+                    db.collection("users").document(email.substring(0,5))
+                        .set(userData)
+                        .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
+                        .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+
+                    val intent = Intent(this, DetailsActivity::class.java)
+                    intent.putExtra("email", email.substring(0,5))
+                    startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                     val user = auth.currentUser
 //                    updateUI(user)
                     val intent = Intent(this, DetailsActivity::class.java)
+                    intent.putExtra("email", email.substring(0,5))
                     startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
