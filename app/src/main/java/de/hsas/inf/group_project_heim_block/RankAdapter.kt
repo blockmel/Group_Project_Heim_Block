@@ -16,12 +16,12 @@ class RankAdapter(val listItems: Array<User>, val context: Context) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: RankViewHolder, position: Int) {
-        holder.itemView.findViewById<TextView>(R.id.rank).text = listItems[position].rank
+        holder.itemView.findViewById<TextView>(R.id.rank).text = (position+1).toString()
         holder.itemView.findViewById<TextView>(R.id.name).text = listItems[position].name
         holder.itemView.findViewById<TextView>(R.id.score).text = listItems[position].score
         holder.itemView.setOnClickListener {
             val intent = Intent(context, UserActivity()::class.java)
-            intent.putExtra("rank", listItems[position].rank)
+            intent.putExtra("rank", (position+1).toString())
             intent.putExtra("name", listItems[position].name)
             intent.putExtra("score", listItems[position].score)
             intent.putExtra("course", listItems[position].course)
