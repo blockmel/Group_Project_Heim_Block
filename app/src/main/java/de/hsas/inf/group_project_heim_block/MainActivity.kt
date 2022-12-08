@@ -24,10 +24,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         auth = Firebase.auth
+        val db = Firebase.firestore
         binding.signup.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
             createUser(email, password)
+            val userData = hashMapOf(
+                "name" to "",
+                "course" to "",
+                "year" to ""
+            )
+            db.collection("users").document(email)
+                .set(userData)
+                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+
             val intent = Intent(this, DetailsActivity::class.java)
             startActivity(intent);
         }
