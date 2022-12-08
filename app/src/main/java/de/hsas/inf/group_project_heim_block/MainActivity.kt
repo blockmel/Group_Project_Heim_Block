@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                 .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
 
             val intent = Intent(this, DetailsActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent);
         }
         binding.signin.setOnClickListener {
