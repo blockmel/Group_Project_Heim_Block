@@ -2,8 +2,6 @@ package de.hsas.inf.group_project_heim_block
 
 import android.content.Context
 import android.content.Intent
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -105,9 +103,6 @@ class MainActivity : AppCompatActivity() {
         val db = Firebase.firestore
 
 
-
-        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
 
 

@@ -77,7 +77,7 @@ class RankActivity : AppCompatActivity() {
         startActivity(intent)
     }*/
 
-    private fun assignRank(result: QuerySnapshot){
+    /*private fun assignRank(result: QuerySnapshot){
         val length = result.size()
         var scores = Array(length){i -> (i * i).toString()}
         Log.d(TAG, "scores: ${scores[0]}, ${scores[1]}, ${scores[2]}, ${scores[3]}")
@@ -106,8 +106,8 @@ class RankActivity : AppCompatActivity() {
                 Log.d(TAG, "it: ${it}; found: ${found}; userScoreAsInt: ${userScoreAsInt}; userScore: ${userScore}; counter: ${counter}")
                 if (it.equals(userScoreAsInt) && !found) {
                     Log.d(TAG, "hier")
-                    /*val value: String = (counter +1).toString()
-                    document.data.put("rank", value)*/
+                    *//*val value: String = (counter +1).toString()
+                    document.data.put("rank", value)*//*
 
                     val data = hashMapOf("rank" to (counter +1).toString())
 
@@ -127,5 +127,5 @@ class RankActivity : AppCompatActivity() {
         for (document in result) {
             Log.d(TAG, "${document.id} => ${document.data}")
         }
-    }
+    }*/
 }
