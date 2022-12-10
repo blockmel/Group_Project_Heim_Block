@@ -1,12 +1,10 @@
 package de.hsas.inf.group_project_heim_block
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -34,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                         "course" to "",
                         "year" to ""
                     )
-                    db.collection("users").document(email.substring(0,5))
+                    db.collection("Users").document(email.substring(0,5))
                         .set(userData)
                         .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }

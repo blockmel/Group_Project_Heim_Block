@@ -42,7 +42,7 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
             )
 
             if (currentUser != null) {
-                db.collection("users").document(currentUser)
+                db.collection("Users").document(currentUser)
                     .set(userData)
                     .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
                     .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
@@ -55,8 +55,6 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
 
 
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
-        Log.d(TAG,"triggered")
-        //TODO accelerometer data points
 
     }
 
@@ -73,7 +71,7 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
-        if(accelerometerList.size <10){
+        if(accelerometerList.size <1000){
             if (p0 != null) {
                 val data = hashMapOf(
                     "x" to p0.values[0],
@@ -83,10 +81,9 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
                 accelerometerList.add(data)
 
 
-                //TODO change to 1000
-                if (accelerometerList.size == 10){
+                if (accelerometerList.size == 1000){
                     val accelerometerData = hashMapOf("accelerometer_data" to accelerometerList)
-                    db.collection("users").document(currentUser)
+                    db.collection("Users").document(currentUser)
                         .set(accelerometerData, SetOptions.merge())
                         .addOnSuccessListener { Log.d(TAG, "accelerometerData added") }
                         .addOnFailureListener { Log.d(TAG, "accelerometerData not added") }
@@ -99,6 +96,6 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        TODO("Not yet implemented")
+
     }
 }

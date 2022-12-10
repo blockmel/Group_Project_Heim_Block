@@ -23,7 +23,7 @@ class RankActivity : AppCompatActivity() {
 
         //TODO refresh every minute
 
-        db.collection("users")
+        db.collection("Users")
             .get()
             .addOnSuccessListener { result ->
                 //https://stackoverflow.com/questions/35253368/how-can-i-create-an-array-in-kotlin-like-in-java-by-just-providing-a-size
@@ -95,8 +95,7 @@ class RankActivity : AppCompatActivity() {
                 sumY += abs(it.get("y")!!)
                 sumZ += abs(it.get("z")!!)
             }
-            //TODO change to 1000
-            val score = (sumX + sumY + sumZ)/10
+            val score = (sumX + sumY + sumZ)/1000
 
             return score.toString()
         } else {
