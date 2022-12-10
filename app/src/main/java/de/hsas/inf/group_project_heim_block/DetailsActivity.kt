@@ -13,11 +13,11 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import de.hsas.inf.group_project_heim_block.databinding.ActivityDetailsBinding
-import java.util.*
+import kotlin.collections.HashMap
 
 class DetailsActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var binding: ActivityDetailsBinding
-    var accelerometerArray = arrayOf<AccelerometerData>()
+    var accelerometerList : MutableList<HashMap<String, Float>> = mutableListOf()
     val db = Firebase.firestore
     lateinit var currentUser: String
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,35 +59,24 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
-        if (p0 != null) {
-            Log.d(TAG, p0.values[0].toString())
-        }
-
-        if(accelerometerArray.size <10){
-            Log.d(TAG, "accelerometerArray is ${accelerometerArray.size}")
+        if(accelerometerList.size <10){
             if (p0 != null) {
-                Log.d(TAG, "accelerometerArray gets filled now")
-                val addArray = arrayOf(AccelerometerData(p0.values[0], p0.values[1], p0.values[2]))
-                val helpArray = accelerometerArray
+                val data = hashMapOf(
+                    "x" to p0.values[0],
+                    "y" to p0.values[1],
+                    "z" to p0.values[2]
+                )
+                accelerometerList.add(data)
 
-                val addArrayLength = addArray.size
-                val helpArrayLength = helpArray.size
 
-                accelerometerArray = Array(addArrayLength + helpArrayLength) { AccelerometerData(0F,0F,0F) }
-                System.arraycopy(helpArray, 0, accelerometerArray, 0, helpArrayLength)
-                System.arraycopy(addArray, 0, accelerometerArray, helpArrayLength, addArrayLength)
-//                accelerometerArray.plusElement(AccelerometerData(p0.values[0], p0.values[1], p0.values[2]))
-//                accelerometerArray.plus(AccelerometerData(p0.values[0], p0.values[1], p0.values[2]))
                 //TODO change to 1000
-                if (accelerometerArray.size == 10){
-                    Log.d(TAG, "accelerometerArray is 10: ${accelerometerArray.asList()}")
-                    val data = hashMapOf("accelerometerData" to accelerometerArray.asList())
+                if (accelerometerList.size == 10){
+                    val accelerometerData = hashMapOf("accelerometer_data" to accelerometerList)
                     db.collection("users").document(currentUser)
-                        .set(data, SetOptions.merge())
+                        .set(accelerometerData, SetOptions.merge())
                         .addOnSuccessListener { Log.d(TAG, "accelerometerData added") }
                         .addOnFailureListener { Log.d(TAG, "accelerometerData not added") }
-                    Log.d(TAG, "accelerometerArray is ready to get cleared")
-                    accelerometerArray = arrayOf<AccelerometerData>()
+                    accelerometerList.clear()
                 }
             }
 

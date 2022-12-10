@@ -20,20 +20,6 @@ class MainActivity : AppCompatActivity() {
     val db = Firebase.firestore
     override fun onPostResume() {
         super.onPostResume()
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        auth = Firebase.auth
-        binding.signup.setOnClickListener {
-            val email = binding.email.text.toString()
-            val password = binding.password.text.toString()
-            createUser(email, password)
-
-        }
-        binding.signin.setOnClickListener {
-            val email = binding.email.text.toString()
-            val password = binding.password.text.toString()
-            authUser(email, password)
-        }
     }
 
     private fun createUser(email: String, password: String) {
@@ -103,90 +89,18 @@ class MainActivity : AppCompatActivity() {
         val db = Firebase.firestore
 
 
+        auth = Firebase.auth
+        binding.signup.setOnClickListener {
+            val email = binding.email.text.toString()
+            val password = binding.password.text.toString()
+            createUser(email, password)
 
-
-
-
-// !!!       create a first user
-        /*// Create a new user with a first and last name
-        val user = hashMapOf(
-            "first" to "Ada",
-            "last" to "Lovelace",
-            "born" to 1815
-        )
-
-        // Add a new document with a generated ID
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }*/
-
-
-// !!!       create a second user
-        /*// Create a new user with a first, middle, and last name
-        val user = hashMapOf(
-            "first" to "Alan",
-            "middle" to "Mathison",
-            "last" to "Turing",
-            "born" to 1912
-        )
-
-        // Add a new document with a generated ID
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }*/
-
-
-// !!!       Read data from database
-        /*db.collection("users")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents.", exception)
-            }*/
-
-
-// !!!       create multiple users at ones
-        /*val usersCollection = db.collection("users")
-
-        // Create a new user with a first and last name
-        val user1 = User("Ada1", "Lovelace", 1915)
-        val user2 = User("Ada2", "Lovelace", 1915)
-        val user3 = User("Ada3", "Lovelace", 1915)
-        val user4 = User("Ada4", "Lovelace", 1915)
-        val user5 = User("Ada5", "Lovelace", 1915)
-
-        arrayOf(user1, user2, user3, user4, user5).map { user ->
-            val name = "${user.fname} ${user.lname}"
-            usersCollection.add(user)
-                .addOnSuccessListener { documentReference ->
-                    Log.d(TAG, "User $name added with ID: ${documentReference.id}")
-                }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "Error adding user $name", e)
-                }
-        }*/
+        }
+        binding.signin.setOnClickListener {
+            val email = binding.email.text.toString()
+            val password = binding.password.text.toString()
+            authUser(email, password)
+        }
 
     }
 }
-
-
-/*
-class User(
-    var fname: String,
-    var lname: String,
-    var born: Int,
-)*/

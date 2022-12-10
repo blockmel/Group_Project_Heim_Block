@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import de.hsas.inf.group_project_heim_block.databinding.ActivityRankBinding
+import kotlin.math.abs
 
 class RankActivity : AppCompatActivity() {
     val TAG = "RankActivity"
@@ -16,116 +16,91 @@ class RankActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRankBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         binding = ActivityRankBinding.inflate(layoutInflater)
         val rootView = binding.root
         setContentView(rootView)
 
 
-
-
-        //TODO change userArray to data read from Firebase
-        //TODO calculate movement score
-        //TODO sort users after score
         //TODO refresh every minute
 
         db.collection("users")
             .get()
             .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                    Log.d(TAG, "${document.data.get("score")}")
-                }
-                //depending on the length of result do an array
-                //fill with data
-                //sort array
-
                 //https://stackoverflow.com/questions/35253368/how-can-i-create-an-array-in-kotlin-like-in-java-by-just-providing-a-size
-                var array: Array<User> = Array(result.size()){User("","","","")}
-                var counter = 0
+                var arrayWithScores: Array<User> = Array(result.size()){User("","","","")}
+                var arrayWithOutScores: Array<User> = Array(result.size()){User("","","","")}
+                var counterScores = 0
+                var counterWithoutScores = 0
                 for (document in result) {
-                    array.set(counter, User(document.data.get("name").toString(), document.data.get("course").toString(),
-                        document.data.get("year").toString(), document.data.get("score").toString()))
-                    counter++
+                    val score = calculateScore(document)
+                    if (score != "N/A") {
+                        arrayWithScores.set(
+                            counterScores, User(
+                                document.data.get("name").toString(),
+                                document.data.get("course").toString(),
+                                document.data.get("year").toString(),
+                                score
+                            )
+                        )
+                        counterScores++
+                    } else {
+                        arrayWithOutScores.set(counterWithoutScores, User(document.data.get("name").toString(), document.data.get("course").toString(),
+                            document.data.get("year").toString(), score))
+                        counterWithoutScores++
+                    }
                 }
-//                array.set(0, user1)
-//                array.set(1,user2)
-                Log.d(TAG, "Array0: ${array.get(0)} ; Array1: ${array.get(1)}")
-//                assignRank(result)
+                var remove = 0
+                arrayWithScores.forEach {
+                    if(it.score == "")
+                        remove++
+                }
+                arrayWithScores = arrayWithScores.copyOfRange(0, arrayWithScores.size-remove)
 
-                array.sortBy { it.score }
+                remove = 0
+                arrayWithOutScores.forEach {
+                    if(it.score == "")
+                        remove++
+                }
+                arrayWithOutScores = arrayWithOutScores.copyOfRange(0, arrayWithOutScores.size-remove)
+
+                arrayWithScores.sortByDescending { it.score }
+
+                val arrayWithScoresLen = arrayWithScores.size
+                val arrayWithOutScoresLen = arrayWithOutScores.size
+                val arrayScores = Array<User>(arrayWithScoresLen + arrayWithOutScoresLen){User("","","","")}
+
+                System.arraycopy(arrayWithScores, 0, arrayScores, 0, arrayWithScoresLen)
+                System.arraycopy(arrayWithOutScores, 0, arrayScores, arrayWithScoresLen, arrayWithOutScoresLen)
 
                 binding.leaderboardRecyclerView.layoutManager = LinearLayoutManager(this)
-                binding.leaderboardRecyclerView.adapter = RankAdapter(array, this)
+                binding.leaderboardRecyclerView.adapter = RankAdapter(arrayScores, this)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents.", exception)
             }
-
-
-
-//        val rankAdapter = RankAdapter { rank -> adapterOnClick(rank) }
-/*
-        val recyclerView: RecyclerView = findViewById(R.id.leaderboard_recycler_view)
-        recyclerView.adapter = rankAdapter*/
     }
 
-/*    private fun adapterOnClick(rank: Rank) {
-        val intent = Intent(this, UserActivity()::class.java)
-        intent.putExtra(RANK_NAME, rank.name)
-        startActivity(intent)
-    }*/
-
-    /*private fun assignRank(result: QuerySnapshot){
-        val length = result.size()
-        var scores = Array(length){i -> (i * i).toString()}
-        Log.d(TAG, "scores: ${scores[0]}, ${scores[1]}, ${scores[2]}, ${scores[3]}")
-        var counter = 0
-        for (document in result) {
-            document.data.get("score")
-            scores[counter] = document.data.get("score") as String
-            counter++
-        }
-        Log.d(TAG, "scores2: ${scores[0]}, ${scores[1]}, ${scores[2]}, ${scores[3]}")
-        var scoresAsInt = Array(length){i -> (i * i)}
-        counter = 0
-        scores.forEach {
-            scoresAsInt[counter] = it.toInt()
-            counter++
-        }
-        Log.d(TAG, "scores3: ${scoresAsInt[0]}, ${scoresAsInt[1]}, ${scoresAsInt[2]}, ${scoresAsInt[3]}")
-        scoresAsInt.sortDescending()
-        Log.d(TAG, "scores4: ${scoresAsInt[0]}, ${scoresAsInt[1]}, ${scoresAsInt[2]}, ${scoresAsInt[3]}")
-        for (document in result) {
-            val userScore : String = document.data.get("score") as String
-            val userScoreAsInt : Int = userScore.toInt()
-            counter = 0
-            var found = false
-            scoresAsInt.forEach {
-                Log.d(TAG, "it: ${it}; found: ${found}; userScoreAsInt: ${userScoreAsInt}; userScore: ${userScore}; counter: ${counter}")
-                if (it.equals(userScoreAsInt) && !found) {
-                    Log.d(TAG, "hier")
-                    *//*val value: String = (counter +1).toString()
-                    document.data.put("rank", value)*//*
-
-                    val data = hashMapOf("rank" to (counter +1).toString())
-
-                    db.collection("user").document(document.id)
-                        .set(data, SetOptions.merge())
-                        .addOnSuccessListener { Log.d(TAG, "aktualisiert") }
-                        .addOnFailureListener { Log.d(TAG, "nicht aktualisiert") }
 
 
-                    Log.d(TAG, "${document.data}")
-                    found = true
-                }
-                counter++
+    private fun calculateScore(document: QueryDocumentSnapshot) : String {
+        if (document.data.get("accelerometer_data") != null){
+            val list: MutableList<HashMap<String, Double>> = document.data.get("accelerometer_data") as MutableList<HashMap<String, Double>>
+            if(list.size > 1000)
+                return "N/A"
+            var sumX = 0.0
+            var sumY = 0.0
+            var sumZ = 0.0
+            list.forEach{
+                sumX += abs(it.get("x")!!)
+                sumY += abs(it.get("y")!!)
+                sumZ += abs(it.get("z")!!)
             }
-        }
+            //TODO change to 1000
+            val score = (sumX + sumY + sumZ)/10
 
-        for (document in result) {
-            Log.d(TAG, "${document.id} => ${document.data}")
+            return score.toString()
+        } else {
+            return "N/A"
         }
-    }*/
+    }
 }
