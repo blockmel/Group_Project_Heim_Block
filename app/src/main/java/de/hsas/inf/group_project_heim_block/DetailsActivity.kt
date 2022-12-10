@@ -20,6 +20,8 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
     var accelerometerList : MutableList<HashMap<String, Float>> = mutableListOf()
     val db = Firebase.firestore
     lateinit var currentUser: String
+    lateinit var sensorManager: SensorManager
+    lateinit var sensor: Sensor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,14 +50,26 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
         }
 
 
-        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
 
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
         Log.d(TAG,"triggered")
         //TODO accelerometer data points
 
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this, sensor)
+    }
+
+
+    override fun onPostResume() {
+        super.onPostResume()
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {

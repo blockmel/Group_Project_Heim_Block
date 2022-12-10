@@ -18,9 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityMainBinding
     val db = Firebase.firestore
-    override fun onPostResume() {
-        super.onPostResume()
-    }
+
 
     private fun createUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
@@ -77,9 +75,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
