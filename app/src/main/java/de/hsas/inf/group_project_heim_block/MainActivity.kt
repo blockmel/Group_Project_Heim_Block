@@ -28,9 +28,9 @@ class MainActivity : AppCompatActivity() {
 //                    updateUI(user)
 
                     val userData = hashMapOf(
-                        "name" to "",
-                        "course" to "",
-                        "year" to ""
+                        "name" to "name",
+                        "course" to "course",
+                        "year" to "0"
                     )
                     db.collection("Users").document(email.substring(0,5))
                         .set(userData)
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                         .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
 
                     val intent = Intent(this, DetailsActivity::class.java)
-                    intent.putExtra("email", email.substring(0,5))
+                    intent.putExtra("studentID", email.substring(0,5))
                     startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                     val user = auth.currentUser
 //                    updateUI(user)
                     val intent = Intent(this, DetailsActivity::class.java)
-                    intent.putExtra("email", email.substring(0,5))
+                    intent.putExtra("studentID", email.substring(0,5))
                     startActivity(intent);
                 } else {
                     // If sign in fails, display a message to the user.

@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -27,10 +28,31 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
 
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val currentUser = intent.getStringExtra("studentID")
+        /*val name = binding.nameEdit.text.toString()
+        val course = binding.courseEdit.text.toString()
+        val year = binding.yearEdit.text.toString()*/
 
-        currentUser = intent.getStringExtra("email").toString()
+        //Trying to show the data that are already on the database
+        val data = currentUser?.let { db.collection("Users").document(it) }
+        data?.get()?.addOnSuccessListener { document ->
+            if (document != null) {
+                Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                Log.d(TAG, "DocumentSnapshot data 2: ${document.data?.get("year")}")
+                binding.nameEdit.setText(document.data?.get("name").toString())
+                binding.courseEdit.setText(document.data?.get("course").toString())
+                binding.yearEdit.setText(document.data?.get("year").toString())
+            } else {
+                Log.d(TAG, "No such document")
+            }
+        }?.addOnFailureListener { exception ->
+            Log.d(TAG, "get failed with ", exception)
+        }
+
+
+
         binding.updateDetails.setOnClickListener {
-            val currentUser = intent.getStringExtra("email")
+            //val currentUser = intent.getStringExtra("email")
             val name = binding.nameEdit.text.toString()
             val course = binding.courseEdit.text.toString()
             val year = binding.yearEdit.text.toString()
