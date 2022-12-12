@@ -31,6 +31,10 @@ class RankActivity : AppCompatActivity() {
         setContentView(rootView)
         getLeaderboard()
 
+        binding.backButton.setOnClickListener {
+            this.finish()
+        }
+
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
         var time: Long = System.currentTimeMillis()

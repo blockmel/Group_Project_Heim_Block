@@ -7,13 +7,13 @@
    - [x] Sign up using StudentID (as username) and a password
    - [x] After sign up, collect and update details such as name, course, year in Firestore > StudentID, allow editing these details later
    - [x] Collect and store locally 1000 accelerometer data points
-   - [ ] Once 1000 data points are collected, upload to Firestore > StudentID > accelerometer_data
+   - [x] Once 1000 data points are collected, upload to Firestore > StudentID > accelerometer_data
    - [x] Repeat 3 and 4 as long as the app is open and is in the foreground (Don't record when minimised)
 - 2. Display Leaderboard
    - [x] Retrieve accelerometer_data of all users and calculate movement score2 for each user
    - [x] If accelerometer_data is unavailable or not in correct format or has more than 1000 data points, show score "N/A".
    - [x] Show recycler view to display leaderboard with columns rank, name and score (use score for ranking)
-   - [ ] Refresh every minute, show information: last refreshed (in time ago format3), and refreshing in x seconds
+   - [x] Refresh every minute, show information: last refreshed (in time ago format3), and refreshing in x seconds
    - [x] Show details of user when clicked in full screen, allow going back to leaderboard
 
 ## Report: 

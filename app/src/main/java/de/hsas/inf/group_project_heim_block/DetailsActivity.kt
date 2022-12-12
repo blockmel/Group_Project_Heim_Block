@@ -2,6 +2,7 @@ package de.hsas.inf.group_project_heim_block
 
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -69,6 +70,11 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
                     .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
                     .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
             }
+        }
+
+        binding.goToRank.setOnClickListener {
+            val intent = Intent(this, RankActivity::class.java)
+            startActivity(intent)
         }
 
 
