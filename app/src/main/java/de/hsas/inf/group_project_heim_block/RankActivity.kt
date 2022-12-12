@@ -159,9 +159,13 @@ class RankActivity : AppCompatActivity() {
 
 
     private fun calculateScore(document: QueryDocumentSnapshot) : String {
-        Log.d(TAG, "${document.data.get("name")}")
         if (document.data.get("accelerometer_data") != null){
-            val list: MutableList<HashMap<String, Double>> = document.data.get("accelerometer_data") as MutableList<HashMap<String, Double>>
+            var list: MutableList<HashMap<String, Double>> = mutableListOf()
+            try{
+                list = document.data.get("accelerometer_data") as MutableList<HashMap<String, Double>>
+            } catch (e: Exception){
+                return "N/A"
+            }
             if(list.size > 1000)
                 return "N/A"
             var sumX = 0.0
