@@ -22,6 +22,10 @@ The first challenges we faced were to work in a team. We are not very familiar w
 We dispatched the tasks pretty much easily. <br />
 The signin/signup part took us a little while because of thought we had to use the Student ID only. It took a bit of a time understand that the authentication had nothing to do with the database. But once we understood that we were able to login with the student mail address in Firebase Authentication system and retrieve the Student ID to create the Firestore documents.<br />
 The show/edit features challenges were mainly to find which syntax to use to be able to access the data stored in Firestore and how to use them.<br />
+Another challenge we faced was building the Recycler View to display the leaderboard. In the beginning this was hard, because we never did this before and the examples we found in the internet were really complecated and complex. After some time and with the materials from the first Mobile App course we could fix this problem and show the leaderboard.<br />
+Also the storing of accelerometer data points in Firebase took some time, because there were some difficulties to store them in the correct format.<br />
+Our last challenge was the refresh every minute. The biggest challenge here was to find a way, that the times of the latest refresh and the next refresh are counting all the time and that the leaderboard gets refreshed after every minute. But we could solve the challenge by using a second thread.<br />
+
 
 
 ## References:
