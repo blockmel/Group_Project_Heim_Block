@@ -30,11 +30,7 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
         setContentView(binding.root)
         currentUser = intent.getStringExtra("studentID").toString()
         val currentUser = intent.getStringExtra("studentID")
-        /*val name = binding.nameEdit.text.toString()
-        val course = binding.courseEdit.text.toString()
-        val year = binding.yearEdit.text.toString()*/
 
-        //Trying to show the data that are already on the database
         val data = currentUser?.let { db.collection("Users").document(it) }
         data?.get()?.addOnSuccessListener { document ->
             if (document != null) {
@@ -53,7 +49,6 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
 
 
         binding.updateDetails.setOnClickListener {
-            //val currentUser = intent.getStringExtra("email")
             val name = binding.nameEdit.text.toString()
             val course = binding.courseEdit.text.toString()
             val year = binding.yearEdit.text.toString()

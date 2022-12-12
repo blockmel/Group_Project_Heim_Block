@@ -22,10 +22,8 @@ class MainActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
-//                    updateUI(user)
 
                     val userData = hashMapOf(
                         "name" to "name",
@@ -41,11 +39,9 @@ class MainActivity : AppCompatActivity() {
                     intent.putExtra("studentID", email.substring(0,5))
                     startActivity(intent);
                 } else {
-                    // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "email is not valid or already used.",
                         Toast.LENGTH_SHORT).show()
-//                    updateUI(null)
                 }
             }
     }
@@ -54,21 +50,17 @@ class MainActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
-//                    updateUI(user)
                     val intent = Intent(this, DetailsActivity::class.java)
                     intent.putExtra("studentID", email.substring(0,5))
                     startActivity(intent);
                 } else {
-                    // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     Toast.makeText(
                         baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT
                     ).show()
-//                    updateUI(null)
                 }
             }
     }
