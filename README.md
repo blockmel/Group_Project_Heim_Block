@@ -22,3 +22,11 @@ The first challenges we faced were to work in a team. We are not very familiar w
 We dispatched the tasks pretty much easily. <br />
 The signin/signup part took us a little while because of thought we had to use the Student ID only. It took a bit of a time understand that the authentication had nothing to do with the database. But once we understood that we were able to login with the student mail address in Firebase Authentication system and retrieve the Student ID to create the Firestore documents.<br />
 The show/edit features challenges were mainly to find which syntax to use to be able to access the data stored in Firestore and how to use them.<br />
+
+
+## References:
+From the following references code was used in part or fully:
+- https://stackoverflow.com/questions/35253368/how-can-i-create-an-array-in-kotlin-like-in-java-by-just-providing-a-size
+- https://github.com/okwrtdsh/AccelerometerTest/blob/master/app/src/main/kotlin/com/github/okwrtdsh/accelerometertest/MainActivity.kt
+- https://www.programiz.com/kotlin-programming/examples/concatenate-two-arrays
+- https://stackoverflow.com/questions/35858608/how-to-convert-time-to-time-ago-in-android
