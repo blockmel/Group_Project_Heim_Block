@@ -1,14 +1,24 @@
 package de.hsas.inf.group_project_heim_block
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.format.DateUtils
 import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import de.hsas.inf.group_project_heim_block.databinding.ActivityRankBinding
+import okhttp3.*
+import java.io.IOException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.abs
+
 
 class RankActivity : AppCompatActivity() {
     val TAG = "RankActivity"
@@ -19,10 +29,76 @@ class RankActivity : AppCompatActivity() {
         binding = ActivityRankBinding.inflate(layoutInflater)
         val rootView = binding.root
         setContentView(rootView)
+        getLeaderboard()
+
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
+        var time: Long = System.currentTimeMillis()
+        var nextTime = time + 61000
 
 
-        //TODO refresh every minute
+        val client = OkHttpClient()
+        val request = Request.Builder().url("https://gist.githubusercontent.com/saravanabalagi/541a511eb71c366e0bf3eecbee2dab0a/raw/bb1529d2e5b71fd06760cb030d6e15d6d56c34b3/place_types.json").build()
 
+        client.newCall(request).enqueue(object: Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                while (true){
+                    try {
+                        val now = System.currentTimeMillis()
+                        val ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.SECOND_IN_MILLIS)
+                        Handler(Looper.getMainLooper()).post {
+                            val lastRefresh: TextView = findViewById(R.id.last_refreshed)
+                            lastRefresh.text = "Last refreshed " + ago
+                            val nextRefresh: TextView = findViewById(R.id.next_refresh)
+                            nextRefresh.text = "Refreshing in " + ((nextTime - now)/1000).toString() + " seconds"
+                        }
+                        val oneMinute: CharSequence = "1 minute ago"
+                        if (ago == oneMinute){
+                            Handler(Looper.getMainLooper()).post {
+                                getLeaderboard()
+                            }
+                            time = System.currentTimeMillis()
+                            nextTime = time + 61000
+                        }
+                    } catch (e: ParseException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    while (true){
+                        try {
+                            val now = System.currentTimeMillis()
+                            val ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.SECOND_IN_MILLIS)
+                            Handler(Looper.getMainLooper()).post {
+                                val lastRefresh: TextView = findViewById(R.id.last_refreshed)
+                                lastRefresh.text = "Last refreshed " + ago
+                                val nextRefresh: TextView = findViewById(R.id.next_refresh)
+                                nextRefresh.text = "Refreshing in " + ((nextTime - now)/1000).toString() + " seconds"
+                            }
+                            val oneMinute: CharSequence = "1 minute ago"
+                            if (ago == oneMinute){
+                                Handler(Looper.getMainLooper()).post {
+                                    getLeaderboard()
+                                }
+                                time = System.currentTimeMillis()
+                                nextTime = time + 61000
+                            }
+                        } catch (e: ParseException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+        })
+
+
+    }
+
+
+    private fun getLeaderboard(){
         db.collection("Users")
             .get()
             .addOnSuccessListener { result ->
@@ -83,6 +159,7 @@ class RankActivity : AppCompatActivity() {
 
 
     private fun calculateScore(document: QueryDocumentSnapshot) : String {
+        Log.d(TAG, "${document.data.get("name")}")
         if (document.data.get("accelerometer_data") != null){
             val list: MutableList<HashMap<String, Double>> = document.data.get("accelerometer_data") as MutableList<HashMap<String, Double>>
             if(list.size > 1000)

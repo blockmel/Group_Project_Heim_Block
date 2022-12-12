@@ -8,7 +8,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -18,7 +17,7 @@ import kotlin.collections.HashMap
 
 class DetailsActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var binding: ActivityDetailsBinding
-    var accelerometerList : MutableList<HashMap<String, Float>> = mutableListOf()
+    var accelerometerArray: Array<HashMap<String, Float>> = arrayOf()
     val db = Firebase.firestore
     lateinit var currentUser: String
     lateinit var sensorManager: SensorManager
@@ -28,6 +27,7 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
 
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        currentUser = intent.getStringExtra("studentID").toString()
         val currentUser = intent.getStringExtra("studentID")
         /*val name = binding.nameEdit.text.toString()
         val course = binding.courseEdit.text.toString()
@@ -93,23 +93,25 @@ class DetailsActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
-        if(accelerometerList.size <1000){
+        if(accelerometerArray.size <1000){
             if (p0 != null) {
-                val data = hashMapOf(
-                    "x" to p0.values[0],
-                    "y" to p0.values[1],
-                    "z" to p0.values[2]
-                )
-                accelerometerList.add(data)
+                val accelerometerHelpArray = accelerometerArray
+                val newAccelerometerDataArray = Array<HashMap<String, Float>>(1){hashMapOf("x" to p0.values[0], "y" to p0.values[1], "z" to p0.values[2])}
+                val accelerometerHelpArrayLen = accelerometerHelpArray.size
+                val newAccelerometerDataArrayLen = newAccelerometerDataArray.size
+                accelerometerArray = Array<HashMap<String, Float>>(accelerometerHelpArrayLen + newAccelerometerDataArrayLen){hashMapOf("x" to 0F, "y" to 0F, "z" to 0F)}
+
+                System.arraycopy(accelerometerHelpArray, 0, accelerometerArray, 0, accelerometerHelpArrayLen)
+                System.arraycopy(newAccelerometerDataArray, 0, accelerometerArray, accelerometerHelpArrayLen, newAccelerometerDataArrayLen)
 
 
-                if (accelerometerList.size == 1000){
-                    val accelerometerData = hashMapOf("accelerometer_data" to accelerometerList)
+                if (accelerometerArray.size == 1000){
+                    val accelerometerData = hashMapOf("accelerometer_data" to accelerometerArray.asList())
                     db.collection("Users").document(currentUser)
                         .set(accelerometerData, SetOptions.merge())
                         .addOnSuccessListener { Log.d(TAG, "accelerometerData added") }
                         .addOnFailureListener { Log.d(TAG, "accelerometerData not added") }
-                    accelerometerList.clear()
+                    accelerometerArray = arrayOf()
                 }
             }
 
