@@ -25,7 +25,9 @@ The show/edit features challenges were mainly to find which syntax to use to be 
 Another challenge we faced was building the Recycler View to display the leaderboard. In the beginning this was hard, because we never did this before and the examples we found in the internet were really complecated and complex. After some time and with the materials from the first Mobile App course we could fix this problem and show the leaderboard.<br />
 Also the storing of accelerometer data points in Firebase took some time, because there were some difficulties to store them in the correct format.<br />
 Our last challenge was the refresh every minute. The biggest challenge here was to find a way, that the times of the latest refresh and the next refresh are counting all the time and that the leaderboard gets refreshed after every minute. But we could solve the challenge by using a second thread.<br />
-
+The last point that challenged us was building a release with your Firebase. We tried different combinations with the setup but nothing was working as we always had a permission problem at the end. So we decided to submit our project with our Firebase because at the time I am writing this we are living to our home country. 
+It was a pleasure to follow your class ! 
+Take care.
 
 
 ## References:
