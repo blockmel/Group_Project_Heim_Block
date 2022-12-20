@@ -28,6 +28,9 @@ Our last challenge was the refresh every minute. The biggest challenge here was 
 The last point that challenged us was building a release with your Firebase. We tried different combinations with the setup but nothing was working as we always had a permission problem at the end. So we decided to submit our project with our Firebase because at the time I am writing this we are living to our home country. 
 It was a pleasure to follow your class ! 
 Take care.
+<br />
+<br />
+Edit: We were now able to fix the last challenge and could change the submission to your Firebase.
 
 
 ## References:
